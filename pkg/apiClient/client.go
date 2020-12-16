@@ -5,6 +5,7 @@ import (
 	"net/http"
 )
 
+// Client Api client struct
 type Client struct {
 	SubDomain   string
 	AccessToken string
@@ -12,7 +13,8 @@ type Client struct {
 	HTTPClient  http.Client
 }
 
-func NewClient(subDomain string, accessToken string) Client {
+// MakeClient Generates an api client
+func MakeClient(subDomain string, accessToken string) Client {
 	baseURL := fmt.Sprintf("https://%v.myclubhouse.co.uk/api/v1/", subDomain)
 	c := Client{
 		SubDomain:   subDomain,
@@ -21,6 +23,7 @@ func NewClient(subDomain string, accessToken string) Client {
 	}
 	c.HTTPClient = http.Client{
 		//Timeout: time.Second * 2,
+		// Add general options here
 	}
 	return c
 }

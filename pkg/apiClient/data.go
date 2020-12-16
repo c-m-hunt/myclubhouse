@@ -8,8 +8,10 @@ import (
 	"net/http"
 
 	"github.com/c-m-hunt/myclubhouse/pkg/data"
+	"github.com/google/go-querystring/query"
 )
 
+// UsersResponse Response back from the client
 type UsersResponse struct {
 	Users      []data.User
 	Pagination struct {
@@ -18,6 +20,15 @@ type UsersResponse struct {
 		PageSize     int
 		SelectedPage int
 	}
+}
+
+// UsersQuery Query used to request users
+type UsersQuery struct {
+	View         string `url:"view"`
+	Sort         string `url:"sort"`
+	Filter       string `url:"filter"`
+	SelectedPage int    `url:"selectedPage"`
+	PageSize     int    `url:"pageSize"`
 }
 
 func (c Client) getRequest(url string) *http.Request {
@@ -29,14 +40,16 @@ func (c Client) getRequest(url string) *http.Request {
 	return req
 }
 
-func (c Client) Users() (*[]data.User, error) {
-	usersResponse, err := c.RequestUsers()
+// Users Get users from the api client
+func (c Client) Users(uq *UsersQuery) (*[]data.User, error) {
+	usersResponse, err := c.requestUsers(uq)
 	return &usersResponse.Users, err
 }
 
-// Users Gets users from the service
-func (c Client) RequestUsers() (*UsersResponse, error) {
-	url := fmt.Sprintf("%v%v", c.BaseURL, "users")
+// RequestUsers Requests users from the client
+func (c Client) requestUsers(uq *UsersQuery) (*UsersResponse, error) {
+	v, _ := query.Values(uq)
+	url := fmt.Sprintf("%v%v?%v", c.BaseURL, "users", v.Encode())
 	req := c.getRequest(url)
 	res, getErr := c.HTTPClient.Do(req)
 	if getErr != nil {
