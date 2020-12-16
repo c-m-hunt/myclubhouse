@@ -17,7 +17,13 @@ type User struct {
 }
 
 type UsersResponse struct {
-	Users []User
+	Users      []User
+	Pagination struct {
+		ItemCount    int
+		PageCount    int
+		PageSize     int
+		SelectedPage int
+	}
 }
 
 func (c Client) getRequest(url string) *http.Request {
@@ -31,9 +37,9 @@ func (c Client) getRequest(url string) *http.Request {
 
 // Users Gets users from the service
 func (c Client) Users() UsersResponse {
-	url := fmt.Sprintf("%v%v", c.BaseUrl, "users")
+	url := fmt.Sprintf("%v%v", c.BaseURL, "users")
 	req := c.getRequest(url)
-	res, getErr := c.HttpClient.Do(req)
+	res, getErr := c.HTTPClient.Do(req)
 	if getErr != nil {
 		log.Fatal(getErr)
 	}
@@ -46,5 +52,7 @@ func (c Client) Users() UsersResponse {
 	if jsonErr != nil {
 		log.Fatal(jsonErr)
 	}
+
+	fmt.Print(usersResponse.Pagination)
 	return usersResponse
 }
