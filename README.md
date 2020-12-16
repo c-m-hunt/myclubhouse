@@ -1,4 +1,4 @@
-# MyClubHouse API Client
+# myClubhouse API Client
 
 ## Instantiation
 ```golang
@@ -12,5 +12,5 @@ c := apiclient.MakeClient(subdomain, apiToken)
 q := apiclient.UsersQuery{
   PageSize: 200,
 }
-users, _ := c.Users(&q)
+users, err := c.Users(&q)
 ```
