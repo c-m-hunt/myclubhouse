@@ -29,8 +29,8 @@ type EventsResponse struct {
 	Pagination ResponsePagination
 }
 
-// UsersQuery - Query used to request users
-type UsersQuery struct {
+// Request - Query used to request different variables
+type RequestQuery struct {
 	View         string `url:"view"`
 	Sort         string `url:"sort"`
 	Filter       string `url:"filter"`
@@ -48,14 +48,14 @@ func (c Client) getRequest(url string) *http.Request {
 }
 
 // Users - Get users from the api client
-func (c Client) Users(uq *UsersQuery) (*[]data.User, error) {
-	ur, err := c.requestUsers(uq)
+func (c Client) Users(rq *RequestQuery) (*[]data.User, error) {
+	ur, err := c.requestUsers(rq)
 	return &ur.Users, err
 }
 
 // Events - Get events from the api client
-func (c Client) Events() (*[]data.Event, error) {
-	er, err := c.requestEvents()
+func (c Client) Events(rq *RequestQuery) (*[]data.Event, error) {
+	er, err := c.requestEvents(rq)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -63,8 +63,8 @@ func (c Client) Events() (*[]data.Event, error) {
 }
 
 // RequestUsers - Requests users from the client
-func (c Client) requestUsers(uq *UsersQuery) (*UsersResponse, error) {
-	v, _ := query.Values(uq)
+func (c Client) requestUsers(rq *RequestQuery) (*UsersResponse, error) {
+	v, _ := query.Values(rq)
 	url := fmt.Sprintf("%v%v?%v", c.BaseURL, "users", v.Encode())
 	usersResponse := UsersResponse{}
 	body, err := c.getResponse(url)
@@ -92,9 +92,9 @@ func (c Client) getResponse(url string) ([]byte, error) {
 }
 
 // RequestEvents - Requests events from the client
-func (c Client) requestEvents() (*EventsResponse, error) {
-	//v, _ := query.Values(uq)
-	url := fmt.Sprintf("%v%v", c.BaseURL, "events")
+func (c Client) requestEvents(rq *RequestQuery) (*EventsResponse, error) {
+	v, _ := query.Values(rq)
+	url := fmt.Sprintf("%v%v?%v", c.BaseURL, "events", v.Encode())
 	eventsResponse := EventsResponse{}
 	body, err := c.getResponse(url)
 	if err != nil {
