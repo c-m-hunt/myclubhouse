@@ -6,18 +6,12 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+
+	"github.com/c-m-hunt/myclubhouse/pkg/data"
 )
 
-type User struct {
-	ID       int
-	Username string
-	Title    string
-	Forename string
-	Surname  string
-}
-
 type UsersResponse struct {
-	Users      []User
+	Users      []data.User
 	Pagination struct {
 		ItemCount    int
 		PageCount    int
@@ -35,24 +29,27 @@ func (c Client) getRequest(url string) *http.Request {
 	return req
 }
 
+func (c Client) Users() (*[]data.User, error) {
+	usersResponse, err := c.RequestUsers()
+	return &usersResponse.Users, err
+}
+
 // Users Gets users from the service
-func (c Client) Users() UsersResponse {
+func (c Client) RequestUsers() (*UsersResponse, error) {
 	url := fmt.Sprintf("%v%v", c.BaseURL, "users")
 	req := c.getRequest(url)
 	res, getErr := c.HTTPClient.Do(req)
 	if getErr != nil {
-		log.Fatal(getErr)
+		return nil, getErr
 	}
 	body, readErr := ioutil.ReadAll(res.Body)
 	if readErr != nil {
-		log.Fatal(readErr)
+		return nil, readErr
 	}
 	usersResponse := UsersResponse{}
 	jsonErr := json.Unmarshal(body, &usersResponse)
 	if jsonErr != nil {
-		log.Fatal(jsonErr)
+		return nil, jsonErr
 	}
-
-	fmt.Print(usersResponse.Pagination)
-	return usersResponse
+	return &usersResponse, nil
 }
