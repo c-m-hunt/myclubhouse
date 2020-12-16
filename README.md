@@ -4,7 +4,7 @@
 ```golang
 import "github.com/c-m-hunt/myclubhouse/apiclient"
 
-c := apiclient.MakeClient(subdomain, apiToken)
+c := apiclient.MakeClient(subdomain, apiToken, nil)
 ```
 
 ## Users

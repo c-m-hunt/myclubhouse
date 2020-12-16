@@ -11,15 +11,22 @@ import (
 	"github.com/google/go-querystring/query"
 )
 
+type ResponsePagination struct {
+	ItemCount    int
+	PageCount    int
+	PageSize     int
+	SelectedPage int
+}
+
 // UsersResponse - Response back from the client
 type UsersResponse struct {
 	Users      []data.User
-	Pagination struct {
-		ItemCount    int
-		PageCount    int
-		PageSize     int
-		SelectedPage int
-	}
+	Pagination ResponsePagination
+}
+
+type EventsResponse struct {
+	Events     []data.Event
+	Pagination ResponsePagination
 }
 
 // UsersQuery - Query used to request users
@@ -42,14 +49,36 @@ func (c Client) getRequest(url string) *http.Request {
 
 // Users - Get users from the api client
 func (c Client) Users(uq *UsersQuery) (*[]data.User, error) {
-	usersResponse, err := c.requestUsers(uq)
-	return &usersResponse.Users, err
+	ur, err := c.requestUsers(uq)
+	return &ur.Users, err
+}
+
+// Events - Get events from the api client
+func (c Client) Events() (*[]data.Event, error) {
+	er, err := c.requestEvents()
+	if err != nil {
+		log.Fatal(err)
+	}
+	return &er.Events, err
 }
 
 // RequestUsers - Requests users from the client
 func (c Client) requestUsers(uq *UsersQuery) (*UsersResponse, error) {
 	v, _ := query.Values(uq)
 	url := fmt.Sprintf("%v%v?%v", c.BaseURL, "users", v.Encode())
+	usersResponse := UsersResponse{}
+	body, err := c.getResponse(url)
+	if err != nil {
+		return nil, err
+	}
+	jsonErr := json.Unmarshal(body, &usersResponse)
+	if jsonErr != nil {
+		return nil, jsonErr
+	}
+	return &usersResponse, nil
+}
+
+func (c Client) getResponse(url string) ([]byte, error) {
 	req := c.getRequest(url)
 	res, getErr := c.HTTPClient.Do(req)
 	if getErr != nil {
@@ -59,10 +88,21 @@ func (c Client) requestUsers(uq *UsersQuery) (*UsersResponse, error) {
 	if readErr != nil {
 		return nil, readErr
 	}
-	usersResponse := UsersResponse{}
-	jsonErr := json.Unmarshal(body, &usersResponse)
+	return body, nil
+}
+
+// RequestEvents - Requests events from the client
+func (c Client) requestEvents() (*EventsResponse, error) {
+	//v, _ := query.Values(uq)
+	url := fmt.Sprintf("%v%v", c.BaseURL, "events")
+	eventsResponse := EventsResponse{}
+	body, err := c.getResponse(url)
+	if err != nil {
+		return nil, err
+	}
+	jsonErr := json.Unmarshal(body, &eventsResponse)
 	if jsonErr != nil {
 		return nil, jsonErr
 	}
-	return &usersResponse, nil
+	return &eventsResponse, nil
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 )
 
+// User User data structure
 type User struct {
 	ID       int
 	Username string
