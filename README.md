@@ -2,7 +2,7 @@
 
 ## Instantiation
 ```golang
-import "github.com/c-m-hunt/myclubhouse/pkg/apiclient"
+import "github.com/c-m-hunt/myclubhouse/apiclient"
 
 c := apiclient.MakeClient(subdomain, apiToken)
 ```

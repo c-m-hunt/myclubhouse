@@ -7,11 +7,11 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/c-m-hunt/myclubhouse/pkg/data"
+	"github.com/c-m-hunt/myclubhouse/data"
 	"github.com/google/go-querystring/query"
 )
 
-// UsersResponse Response back from the client
+// UsersResponse - Response back from the client
 type UsersResponse struct {
 	Users      []data.User
 	Pagination struct {
@@ -22,7 +22,7 @@ type UsersResponse struct {
 	}
 }
 
-// UsersQuery Query used to request users
+// UsersQuery - Query used to request users
 type UsersQuery struct {
 	View         string `url:"view"`
 	Sort         string `url:"sort"`
@@ -40,13 +40,13 @@ func (c Client) getRequest(url string) *http.Request {
 	return req
 }
 
-// Users Get users from the api client
+// Users - Get users from the api client
 func (c Client) Users(uq *UsersQuery) (*[]data.User, error) {
 	usersResponse, err := c.requestUsers(uq)
 	return &usersResponse.Users, err
 }
 
-// RequestUsers Requests users from the client
+// RequestUsers - Requests users from the client
 func (c Client) requestUsers(uq *UsersQuery) (*UsersResponse, error) {
 	v, _ := query.Values(uq)
 	url := fmt.Sprintf("%v%v?%v", c.BaseURL, "users", v.Encode())

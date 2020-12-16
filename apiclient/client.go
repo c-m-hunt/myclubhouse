@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-// Client Api client struct
+// Client - Api client struct
 type Client struct {
 	SubDomain   string
 	AccessToken string
@@ -13,7 +13,7 @@ type Client struct {
 	HTTPClient  http.Client
 }
 
-// MakeClient Generates an api client
+// MakeClient - Generates an api client
 func MakeClient(subDomain string, accessToken string) Client {
 	baseURL := fmt.Sprintf("https://%v.myclubhouse.co.uk/api/v1/", subDomain)
 	c := Client{
