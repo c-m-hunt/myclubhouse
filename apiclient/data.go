@@ -55,6 +55,9 @@ func (c Client) requestEvents(rq *RequestQuery) (*EventsResponse, error) {
 	v, _ := query.Values(rq)
 	url := fmt.Sprintf("%v%v?%v", c.BaseURL, "events", v.Encode())
 	eventsResponse := EventsResponse{}
-	c.getResponse(url, &eventsResponse)
+	err := c.getResponse(url, &eventsResponse)
+	if err != nil {
+		return nil, err
+	}
 	return &eventsResponse, nil
 }
