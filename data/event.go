@@ -1,11 +1,13 @@
 package data
 
+// Cost The cost structure of an event
 type Cost struct {
 	ExclTax   float32
 	Tax       float32
 	TokenCost float32
 }
 
+// Organizer Someone who organises an event
 type Organizer struct {
 	ID               int
 	MembershipNumber string
@@ -16,6 +18,7 @@ type Organizer struct {
 	Branch           string
 }
 
+// Event An event
 type Event struct {
 	ID   int
 	Type struct {
