@@ -23,7 +23,10 @@ type EventsResponse struct {
 // Users - Get users from the api client
 func (c Client) Users(rq *RequestQuery) (*[]data.User, error) {
 	ur, err := c.requestUsers(rq)
-	return &ur.Users, err
+	if err != nil {
+		return nil, err
+	}
+	return &ur.Users, nil
 }
 
 // Events - Get events from the api client
