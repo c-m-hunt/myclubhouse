@@ -9,8 +9,16 @@ c := apiclient.MakeClient(subdomain, apiToken, nil)
 
 ## Users
 ```golang
-q := apiclient.UsersQuery{
+q := apiclient.RequestQuery{
   PageSize: 200,
 }
 users, err := c.Users(&q)
+```
+
+## Events
+```golang
+q := apiclient.RequestQuery{
+  PageSize: 200,
+}
+events, _ := c.Events(&q)
 ```
