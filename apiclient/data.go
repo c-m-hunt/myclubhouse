@@ -29,6 +29,17 @@ func (c Client) Users(rq *RequestQuery) (*[]data.User, error) {
 	return &ur.Users, nil
 }
 
+// User - Retrieves an individual user based on ID
+func (c Client) User(id int) (*data.User, error) {
+	url := fmt.Sprintf("%v%v/%v", c.BaseURL, "users", fmt.Sprint(id))
+	userResponse := data.User{}
+	err := c.getResponse(url, &userResponse)
+	if err != nil {
+		return nil, err
+	}
+	return &userResponse, nil
+}
+
 // Events - Get events from the api client
 func (c Client) Events(rq *RequestQuery) (*[]data.Event, error) {
 	er, err := c.requestEvents(rq)
@@ -36,6 +47,17 @@ func (c Client) Events(rq *RequestQuery) (*[]data.Event, error) {
 		log.Fatal(err)
 	}
 	return &er.Events, err
+}
+
+// Event - Retrieves an individual event
+func (c Client) Event(id int) (*data.Event, error) {
+	url := fmt.Sprintf("%v%v/%v", c.BaseURL, "events", fmt.Sprint(id))
+	eventResponse := data.Event{}
+	err := c.getResponse(url, &eventResponse)
+	if err != nil {
+		return nil, err
+	}
+	return &eventResponse, nil
 }
 
 // RequestUsers - Requests users from the client
