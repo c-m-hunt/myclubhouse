@@ -22,7 +22,7 @@ type EventsResponse struct {
 
 // Users - Get users from the api client
 func (c Client) Users(rq *RequestQuery) (*[]data.User, error) {
-	ur, err := c.requestUsers(rq)
+	ur, err := c.RequestUsers(rq)
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +42,7 @@ func (c Client) User(id int) (*data.User, error) {
 
 // Events - Get events from the api client
 func (c Client) Events(rq *RequestQuery) (*[]data.Event, error) {
-	er, err := c.requestEvents(rq)
+	er, err := c.RequestEvents(rq)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -61,7 +61,7 @@ func (c Client) Event(id int) (*data.Event, error) {
 }
 
 // RequestUsers - Requests users from the client
-func (c Client) requestUsers(rq *RequestQuery) (*UsersResponse, error) {
+func (c Client) RequestUsers(rq *RequestQuery) (*UsersResponse, error) {
 	v, _ := query.Values(rq)
 	url := fmt.Sprintf("%v%v?%v", c.BaseURL, "users", v.Encode())
 	usersResponse := UsersResponse{}
@@ -73,7 +73,7 @@ func (c Client) requestUsers(rq *RequestQuery) (*UsersResponse, error) {
 }
 
 // RequestEvents - Requests events from the client
-func (c Client) requestEvents(rq *RequestQuery) (*EventsResponse, error) {
+func (c Client) RequestEvents(rq *RequestQuery) (*EventsResponse, error) {
 	v, _ := query.Values(rq)
 	url := fmt.Sprintf("%v%v?%v", c.BaseURL, "events", v.Encode())
 	eventsResponse := EventsResponse{}
