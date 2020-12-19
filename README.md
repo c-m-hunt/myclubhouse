@@ -11,10 +11,19 @@ c := apiclient.MakeClient(subdomain, apiToken, nil)
 ```golang
 users, err := c.Users(nil)
 ```
-
+## User
+```golang
+id := 1
+user, err := c.User(id)
+```
 ## Events
 ```golang
 events, err := c.Events(nil)
+```
+## Event
+```golang
+id := 1
+event, err := c.Event(id)
 ```
 
 ## Request query
