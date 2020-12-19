@@ -14,6 +14,12 @@ type ResponsePagination struct {
 	SelectedPage int
 }
 
+// ClientResponse - Response structure from any of the multiple requests
+type ClientResponse struct {
+	Data       interface{}
+	Pagination ResponsePagination
+}
+
 // RequestQuery - Query used to request different variables
 type RequestQuery struct {
 	View         string `url:"view"`

@@ -2,7 +2,6 @@ package apiclient
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/c-m-hunt/myclubhouse/data"
 	"github.com/google/go-querystring/query"
@@ -21,12 +20,18 @@ type EventsResponse struct {
 }
 
 // Users - Get users from the api client
-func (c Client) Users(rq *RequestQuery) (*[]data.User, error) {
+func (c Client) Users(rq *RequestQuery, us *[]data.User) (*ClientResponse, error) {
 	ur, err := c.RequestUsers(rq)
 	if err != nil {
 		return nil, err
 	}
-	return &ur.Users, nil
+	for _, u := range ur.Users {
+		*us = append(*us, u)
+	}
+	cr := ClientResponse{
+		Pagination: ur.Pagination,
+	}
+	return &cr, nil
 }
 
 // User - Retrieves an individual user based on ID
@@ -41,12 +46,18 @@ func (c Client) User(id int) (*data.User, error) {
 }
 
 // Events - Get events from the api client
-func (c Client) Events(rq *RequestQuery) (*[]data.Event, error) {
+func (c Client) Events(rq *RequestQuery, es *[]data.Event) (*ClientResponse, error) {
 	er, err := c.RequestEvents(rq)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
-	return &er.Events, err
+	for _, e := range er.Events {
+		*es = append(*es, e)
+	}
+	cr := ClientResponse{
+		Pagination: er.Pagination,
+	}
+	return &cr, nil
 }
 
 // Event - Retrieves an individual event

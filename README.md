@@ -9,7 +9,8 @@ c := apiclient.MakeClient(subdomain, apiToken, nil)
 
 ## Users
 ```golang
-users, err := c.Users(nil)
+users := []data.User{}
+cr, err := c.Users(nil, &users)
 ```
 ## User
 ```golang
@@ -18,7 +19,8 @@ user, err := c.User(id)
 ```
 ## Events
 ```golang
-events, err := c.Events(nil)
+events := []data.Event{}
+cr, err = c.Events(nil, &events)
 ```
 ## Event
 ```golang
@@ -27,7 +29,7 @@ event, err := c.Event(id)
 ```
 
 ## Request query
-All client requests accept a request query which is in the following structure which will be passed through
+All client requests accept a request query as first argument which is in the following structure which will be passed through
 ```golang
 type RequestQuery struct {
 	View         string `url:"view"`
@@ -43,5 +45,6 @@ Example:
 q := apiclient.RequestQuery{
   PageSize: 200,
 }
-users, err := c.Users(&q)
+users := []data.User{}
+cr, err := c.Users(&q, &users)
 ```
