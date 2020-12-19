@@ -2,6 +2,7 @@ package apiclient
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 )
@@ -12,6 +13,18 @@ type ResponsePagination struct {
 	PageCount    int
 	PageSize     int
 	SelectedPage int
+}
+
+// NextPage - Update the request query to get the next page.
+// Throws an error if there is not another page
+func (rq *RequestQuery) NextPage(rp ResponsePagination) error {
+	rq.SelectedPage = rp.SelectedPage
+	if rp.PageCount > rq.SelectedPage+1 {
+		rq.SelectedPage++
+	} else {
+		return fmt.Errorf("There are no further pages. Max page %v", rp.PageCount)
+	}
+	return nil
 }
 
 // ClientResponse - Response structure from any of the multiple requests
