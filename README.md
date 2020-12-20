@@ -7,6 +7,24 @@ import "github.com/c-m-hunt/myclubhouse/apiclient"
 c := apiclient.MakeClient(subdomain, apiToken, nil)
 ```
 
+## Testing
+To run unit tests, run 
+```bash
+go test ./...
+```
+
+To run integration tests, connection to a service is required.
+
+Create a file `.env` with the following contents subbing in the values:
+```
+ACCESS_TOKEN=xxxxxxxxxxxxxxxxxxxxxxx
+SUBDOMAIN=mysubdomain
+```
+Integration tests can be run with:
+```bash
+go test -tags=integration ./...
+```
+
 ## Users
 ```golang
 users := []data.User{}
