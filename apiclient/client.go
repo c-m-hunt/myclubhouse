@@ -22,7 +22,7 @@ type Client struct {
 	EventsService
 }
 
-// MakeClient - Generates an api client
+// MakeClient - Generates an api client. Pass in httpClient to override defaults
 func MakeClient(subDomain string, accessToken string, httpClient *http.Client) Client {
 	baseURL := fmt.Sprintf("https://%v.myclubhouse.co.uk/api/v1/", subDomain)
 	c := Client{
@@ -33,10 +33,7 @@ func MakeClient(subDomain string, accessToken string, httpClient *http.Client) C
 		EventsService: EventsService{},
 	}
 	if httpClient == nil {
-		c.HTTPClient = &http.Client{
-			//Timeout: time.Second * 2,
-			// Add general options here
-		}
+		c.HTTPClient = &http.Client{}
 	} else {
 		c.HTTPClient = httpClient
 	}
