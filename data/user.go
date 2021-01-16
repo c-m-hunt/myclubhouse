@@ -13,7 +13,7 @@ type Time struct {
 	time.Time
 }
 
-// UnmarshalJSON grab the time from input format to a time object
+// UnmarshalJSON Grab the time from input format to a time object
 func (t *Time) UnmarshalJSON(b []byte) error {
 	strDate := string(b)
 	layouts := map[int]string{
@@ -92,4 +92,19 @@ type User struct {
 // title forename and surname
 func (u User) FullName() string {
 	return fmt.Sprintf("%v %v %v", u.Title, u.Forename, u.Surname)
+}
+
+// NotLoggedIn Returns a slice of users who haven't logged in since
+// a date
+func (us Users) NotLoggedIn(since time.Time) Users {
+	retUsers := Users{}
+	for _, u := range us {
+		if u.LastLoginTime != nil {
+			t := *u.LastLoginTime
+			if since.Before(t.Time) {
+				retUsers = append(retUsers, u)
+			}
+		}
+	}
+	return retUsers
 }
