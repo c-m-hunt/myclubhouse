@@ -12,6 +12,7 @@ import (
 
 func main() {
 	app := &cli.App{
+		Name: "myClubhouse",
 		Commands: []cli.Command{
 			{
 				Name:  "set-config",
