@@ -104,6 +104,8 @@ func (us Users) NotLoggedIn(since time.Time) Users {
 			if since.Before(t.Time) {
 				retUsers = append(retUsers, u)
 			}
+		} else {
+			retUsers = append(retUsers, u)
 		}
 	}
 	return retUsers

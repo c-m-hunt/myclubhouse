@@ -25,7 +25,7 @@ func TestItGetsUsersNotLoggedIn(t *testing.T) {
 	}
 
 	li := u.NotLoggedIn(time.Now().AddDate(0, 0, -2))
-	if len(li) != 1 {
+	if len(li) != 2 {
 		t.Fatal("Not correctly getting not logged in people")
 	}
 }
