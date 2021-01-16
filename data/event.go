@@ -45,10 +45,10 @@ type Event struct {
 	VenueDirections   string
 	VenueLatitude     float32
 	VenueLongitude    float32
-	StartTime         string
-	EndTime           string
-	SignUpOpeningTime string
-	SignUpClosingTime string
+	StartTime         *Time
+	EndTime           *Time
+	SignUpOpeningTime *Time
+	SignUpClosingTime *Time
 	MinAttendees      int
 	MaxAttendees      int
 	AttendeeCount     int
