@@ -9,9 +9,7 @@ import (
 type Users []User
 
 // Time parsable from input json
-type Time struct {
-	time.Time
-}
+type Time time.Time
 
 // UnmarshalJSON Grab the time from input format to a time object
 func (t *Time) UnmarshalJSON(b []byte) error {
@@ -27,7 +25,7 @@ func (t *Time) UnmarshalJSON(b []byte) error {
 	}
 	layout := layouts[len(strDate)]
 	tParsed, _ := time.Parse(layout, strDate)
-	*t = Time{tParsed}
+	*t = Time(tParsed)
 	return nil
 }
 
@@ -101,7 +99,7 @@ func (us Users) NotLoggedIn(since time.Time) Users {
 	for _, u := range us {
 		if u.LastLoginTime != nil {
 			t := *u.LastLoginTime
-			if since.Before(t.Time) {
+			if since.Before(time.Time(t)) {
 				retUsers = append(retUsers, u)
 			}
 		} else {

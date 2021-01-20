@@ -23,11 +23,11 @@ func DisplayExpiringMembers(cfg *Config, before time.Time) {
 		if users[j].MembershipExpiryDate == nil {
 			return false
 		}
-		return users[i].MembershipExpiryDate.Before(users[j].MembershipExpiryDate.Time)
+		return time.Time(*(users[i].MembershipExpiryDate)).Before(time.Time(*(users[j].MembershipExpiryDate)))
 	})
 	for _, u := range users {
-		if u.MembershipExpiryDate != nil && u.MembershipExpiryDate.Before(before) {
-			fmt.Printf("%7v %-35v %20v\n", u.ID, u.FullName(), u.MembershipExpiryDate.Format(dateLayout))
+		if u.MembershipExpiryDate != nil && time.Time(*u.MembershipExpiryDate).Before(before) {
+			fmt.Printf("%7v %-35v %20v\n", u.ID, u.FullName(), time.Time(*u.MembershipExpiryDate).Format(dateLayout))
 		}
 	}
 }
